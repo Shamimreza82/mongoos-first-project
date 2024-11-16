@@ -1,4 +1,4 @@
-import { Schema, model, connect } from 'mongoose';
+import { Schema, model } from 'mongoose';
 import { Guardian, LocalGuardian, Student, UserName } from './student.interface';
 
 
@@ -103,5 +103,5 @@ const studentSchema = new Schema<Student>({
 });
 
 
-/// 3 model 
-const Student = model<Student>('Student', studentSchema)
+/// 3 model create data base name ("student")
+export const StudentModel = model<Student>('Student', studentSchema)
