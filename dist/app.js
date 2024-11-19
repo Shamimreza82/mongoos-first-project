@@ -12,18 +12,30 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.port = void 0;
 const express_1 = __importDefault(require("express"));
 const mongoose_1 = __importDefault(require("mongoose"));
+const cors_1 = __importDefault(require("cors"));
+const config_1 = __importDefault(require("./app/config"));
+const student_route_1 = require("./app/modules/student/student.route");
+const user_router_1 = require("./app/modules/user.model.ts/user.router");
 const app = (0, express_1.default)();
-exports.port = process.env.PORT || 5001;
+app.use((0, cors_1.default)());
+app.use(express_1.default.json());
 function main() {
     return __awaiter(this, void 0, void 0, function* () {
-        yield mongoose_1.default.connect('mongodb+srv://shamimrezaone:<db_password>@cluster0.0wdwu.mongodb.net/first-project?retryWrites=true&w=majority&appName=Cluster0');
+        try {
+            yield mongoose_1.default.connect(config_1.default.database_Url);
+            app.use('/api/v1/students', student_route_1.StudentRoute);
+            app.use('/api/v1/users', user_router_1.UserRouter);
+            // const getAController = (req: Request, res: Response) => {
+            //   res.send('Hello World!');
+            // }
+            // app.get('/', getAController);
+        }
+        catch (error) {
+            console.log(error);
+        }
     });
 }
-
-app.get('/', (req, res) => {
-    res.send('Hello World!');
-});
+main();
 exports.default = app;
